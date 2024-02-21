@@ -1,7 +1,8 @@
 ##
 ## EPITECH PROJECT, 2024
-## Makefile ## File description:
-## compil Cpp
+## NanoTekSpice
+## File description:
+## Makefile
 ##
 
 SRC_MAIN        =   main.cpp
@@ -28,9 +29,11 @@ DIR_SRC = $(addprefix src/, $(SRC))
 
 DIR_COMPONENTS = $(addprefix Components/, $(SRC_COMPONENTS))
 
-DIR_ELEM_COMPONENTS	=	$(addprefix ElementaryComponents/, $(SRC_ELEMENTARY_COMPONENTS))
+DIR_ELEM_COMPONENTS	=\
+	$(addprefix ElementaryComponents/, $(SRC_ELEMENTARY_COMPONENTS))
 
-DIR_SRC_SPECIALS_COMPONENTS	=	$(addprefix SpecialComponents/, $(SRC_SPECIALS_COMPONENTS))
+DIR_SRC_SPECIALS_COMPONENTS	=\
+	$(addprefix SpecialComponents/, $(SRC_SPECIALS_COMPONENTS))
 
 
 OBJ_MAIN            =    $(DIR_MAIN:.cpp=.o)
