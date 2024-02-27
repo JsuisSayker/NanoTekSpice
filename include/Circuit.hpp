@@ -13,7 +13,7 @@
 
 namespace nts
 {
-    class Circuit: public nts::IComponent
+    class Circuit: virtual public nts::IComponent
     {
         public:
             Circuit();
@@ -22,6 +22,10 @@ namespace nts
             void addComponent(IComponent *component, std::string name);
             IComponent *findComponent(std::string name);
             void display();
+
+            nts::Tristate compute(std::size_t pin){return nts::Tristate::Undefined;};
+            void setLink(std::size_t pin, nts::IComponent &other, std::size_t otherPin){};
+
         protected:
             std::vector<std::pair<IComponent *, std::string>> componentList;
             int tick;
