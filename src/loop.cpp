@@ -15,7 +15,12 @@ int loopNts(nts::Circuit *circuit)
     while (1)
     {
         std::cout << "> ";
-        std::getline (std::cin, line);
+        if (!std::getline(std::cin, line)) {
+            if (std::cin.eof()) {
+                std::cout << "Exiting..." << std::endl;
+                return 0;
+            }
+        }
         if (line == "exit")
             return 0;
         if (line == "simulate")
@@ -26,5 +31,4 @@ int loopNts(nts::Circuit *circuit)
             // circuit->display();
         std::cout << line << std::endl;
     }
-
 }
