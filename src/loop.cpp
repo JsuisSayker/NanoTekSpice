@@ -16,10 +16,8 @@ int loopNts(nts::Circuit *circuit)
     {
         std::cout << "> ";
         if (!std::getline(std::cin, line)) {
-            if (std::cin.eof()) {
-                std::cout << "Exiting..." << std::endl;
+            if (std::cin.eof())
                 return 0;
-            }
         }
         if (line == "exit")
             return 0;
