@@ -13,10 +13,15 @@
 #include "IComponent.hpp"
 #include "AComponent.hpp"
 #include "proto.hpp"
+#include "Parser.hpp"
 
-int main(void)
+int main(int argc, char const* const* argv)
 {
     nts::Circuit myCircuit;
+    nts::Parser parser;
+    if (argc == 2)
+        parser.parseFile(argv[1], &myCircuit);
+
     std::unique_ptr<nts::IComponent> gate = std::make_unique<nts::AndComponent>();
     std::unique_ptr<nts::IComponent> input1 = std::make_unique<nts::FalseComponent>();
     std::unique_ptr<nts::IComponent> input2 = std::make_unique<nts::TrueComponent>();
