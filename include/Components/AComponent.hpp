@@ -26,7 +26,6 @@ namespace nts
         Tristate getLink(size_t pin) const;
 
     protected:
-        std::vector<Tristate> pinList;
         std::vector<std::pair<IComponent *, size_t>> link;
     };
 }

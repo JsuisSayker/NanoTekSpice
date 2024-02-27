@@ -5,7 +5,7 @@
 ## Makefile
 ##
 
-SRC_MAIN        =   main.cpp
+SRC_MAIN	=	main.cpp
 
 SRC 	=	Circuit.cpp								\
 			$(DIR_COMPONENTS)
@@ -20,7 +20,10 @@ SRC_ELEMENTARY_COMPONENTS	=	AndComponent.cpp	\
 								XorComponent.cpp
 
 SRC_SPECIALS_COMPONENTS	=	TrueComponent.cpp		\
-							FalseComponent.cpp
+							FalseComponent.cpp		\
+							InputComponent.cpp		\
+							OutputComponent.cpp		\
+							ClockComponent.cpp		\
 
 
 DIR_MAIN = $(addprefix src/, $(SRC_MAIN))
@@ -36,21 +39,21 @@ DIR_SRC_SPECIALS_COMPONENTS	=\
 	$(addprefix SpecialComponents/, $(SRC_SPECIALS_COMPONENTS))
 
 
-OBJ_MAIN            =    $(DIR_MAIN:.cpp=.o)
+OBJ_MAIN		=	$(DIR_MAIN:.cpp=.o)
 
-OBJ_SRC            =    $(DIR_SRC:.cpp=.o)
+OBJ_SRC			=	$(DIR_SRC:.cpp=.o)
 
-OBJ            =    $(OBJ_MAIN) $(OBJ_SRC)
+OBJ				=	$(OBJ_MAIN) $(OBJ_SRC)
 
-NAME 	  =    nanotekspice
+NAME			=	nanotekspice
 
-CFLAGS        =    -std=c++20 -Wall -Wextra -Werror
+CFLAGS			=	-std=c++20 -Wall -Wextra -Werror
 
-CPPFLAGS	=    -I./include/Components
+CPPFLAGS		=	-I./include/Components -I./include
 
-all:    $(NAME)
+all:	$(NAME)
 
-$(NAME):    $(OBJ)
+$(NAME):	$(OBJ)
 	g++ -o $(NAME) $(OBJ) $(CPPFLAGS) $(CFLAGS)
 
 clean:
