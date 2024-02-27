@@ -21,10 +21,15 @@ namespace nts {
                 LINKS,
                 CIRCUIT
             };
-            Parser();
+            struct LineData {
+                std::string type;
+                std::string value;
+            };
+                Parser();
 
             static std::string removeComment(std::string line);
             static std::string findSectionName(const std::string line);
+            static void addComponentToCircuitFromMatch(std::vector<LineData> parsedLines, nts::Circuit *circuit);
             void saveLine(const std::string line, int linePosition, nts::Circuit *circuit);
             void parseFile(const std::string &filename, nts::Circuit *circuit);
             void parseAndExtractDataFromLine(const std::string line, int linePosition, nts::Circuit *circuit);

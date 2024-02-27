@@ -47,7 +47,13 @@ class UnknownSectionName : public std::exception {
         std::string _message;
 };
 
-// class ParserExceptions: virtual public InvalidFileException {
-// };
+class UnknownComponentType : public std::exception {
+    public:
+        UnknownComponentType(const std::string &message) : _message(message) {}
+        const char *what() const noexcept override { return _message.c_str(); }
+
+    private:
+        std::string _message;
+};
 
 #endif /* !PARSEREXCEPTIONS_HPP_ */
