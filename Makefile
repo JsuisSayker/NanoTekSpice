@@ -8,6 +8,7 @@
 SRC_MAIN	=	main.cpp
 
 SRC 	=	Circuit.cpp								\
+			loop.cpp								\
 			$(DIR_COMPONENTS)
 
 SRC_COMPONENTS	=	AComponent.cpp					\
