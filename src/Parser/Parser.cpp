@@ -38,7 +38,7 @@ std::string nts::Parser::findSectionName(const std::string line)
     return sectionName;
 }
 
-void nts::Parser::addComponentToCircuitFromMatch(std::vector<LineData> parsedLines, nts::Circuit *circuit)
+void nts::Parser::addComponentToCircuitFromMatch(std::vector<ChipsetData> parsedLines, nts::Circuit *circuit)
 {
     if (parsedLines[0].type == "input") {
         nts::Input *input = new nts::Input();
@@ -98,17 +98,40 @@ void nts::Parser::addComponentToCircuitFromMatch(std::vector<LineData> parsedLin
         throw UnknownComponentType("Unknown component type: " + parsedLines[0].type);
 }
 
-void nts::Parser::parseAndExtractDataFromLine(const std::string line, int linePosition, nts::Circuit *circuit)
+void nts::Parser::parseAndExtractChipsetFromLine(const std::string line, int linePosition, nts::Circuit *circuit)
 {
-    std::vector<LineData> parsedLines;
+    std::vector<ChipsetData> parsedLines;
     for (const auto& actualLine : line) {
         std::istringstream iss(line);
-        LineData data;
+        ChipsetData data;
         iss >> data.type >> data.value;
         parsedLines.push_back(data);
     }
-    std::cout << "type :" << parsedLines[0].type << "\nvalue :" << parsedLines[0].value << std::endl;
+    // std::cout << "type :" << parsedLines[0].type << "\nvalue :" << parsedLines[0].value << std::endl;
     addComponentToCircuitFromMatch(parsedLines, circuit);
+}
+
+void nts::Parser::parseAndExtractLinkFromLine(const std::string line, int linePosition, nts::Circuit *circuit)
+{
+    std::vector<LineData> entries;
+    std::istringstream iss(line);
+    std::string token;
+
+    while (iss >> token) {
+        LineData entry;
+        size_t pos = token.find(':');
+        if (pos != std::string::npos) {
+            entry.type = token.substr(0, pos);
+            entry.value = std::stoi(token.substr(pos + 1));
+            entries.push_back(entry);
+        }
+    }
+    nts::IComponent *firstComponent =  circuit->findComponent(entries[0].type);
+    nts::IComponent *secondComponent = circuit->findComponent(entries[1].type);
+    firstComponent->setLink(entries[0].value, *secondComponent, entries[1].value);
+    // std::cout << "type 1 :" << entries[0].type << "\nvalue 1 :" << entries[0].value << std::endl;
+    // std::cout << "type 2 :" << entries[1].type << "\nvalue 2 :" << entries[1].value << std::endl;
+
 }
 
 void nts::Parser::saveLine(const std::string line, int linePosition, nts::Circuit *circuit)
@@ -130,33 +153,13 @@ void nts::Parser::saveLine(const std::string line, int linePosition, nts::Circui
     } else {
         if (_section == STARTING)
             throw InvalidSectionException("The file must start with a section name");
-        else if (_section == CHIPSETS  )
-            parseAndExtractDataFromLine(line, linePosition, circuit);
-        // else if (_section == LINKS)
-
+        else if (_section == CHIPSETS)
+            parseAndExtractChipsetFromLine(line, linePosition, circuit);
+        else if (_section == LINKS)
+            parseAndExtractLinkFromLine(line, linePosition, circuit);
     }
 
 }
-
-// void Parser::ltrim(std::string &line)
-// {
-//     line.erase(line.begin(), std::find_if(line.begin(), line.end(), [](unsigned char ch) {
-//         return !std::isspace(ch);
-//     }));
-// }
-
-// void Parser::rtrim(std::string &line)
-// {
-//     line.erase(std::find_if(line.rbegin(), line.rend(), [](unsigned char ch) {
-//         return !std::isspace(ch);
-//     }).base(), line.end());
-// }
-
-// void Parser::trim(std::string &line)
-// {
-//     ltrim(line);
-//     rtrim(line);
-// }
 
 
 void nts::Parser::parseFile(const std::string &filename, nts::Circuit *circuit)

@@ -23,19 +23,22 @@ namespace nts {
             };
             struct LineData {
                 std::string type;
+                size_t value;
+            };
+            struct ChipsetData {
+                std::string type;
                 std::string value;
             };
-                Parser();
+
+            Parser();
 
             static std::string removeComment(std::string line);
             static std::string findSectionName(const std::string line);
-            static void addComponentToCircuitFromMatch(std::vector<LineData> parsedLines, nts::Circuit *circuit);
+            static void addComponentToCircuitFromMatch(std::vector<ChipsetData> parsedLines, nts::Circuit *circuit);
             void saveLine(const std::string line, int linePosition, nts::Circuit *circuit);
             void parseFile(const std::string &filename, nts::Circuit *circuit);
-            void parseAndExtractDataFromLine(const std::string line, int linePosition, nts::Circuit *circuit);
-            // static inline void ltrim(std::string &line);
-            // static inline void rtrim(std::string &line);
-            // static inline void trim(std::string &line);
+            void parseAndExtractChipsetFromLine(const std::string line, int linePosition, nts::Circuit *circuit);
+            void parseAndExtractLinkFromLine(const std::string line, int linePosition, nts::Circuit *circuit);
 
         protected:
             Section _section;
