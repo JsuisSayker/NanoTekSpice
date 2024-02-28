@@ -8,6 +8,15 @@
 #include "IComponent.hpp"
 #include "Circuit.hpp"
 
+int loopCommand(nts::Circuit *circuit)
+{
+    while (1)
+    {
+        circuit->simulate(circuit->getTick());
+        circuit->display();
+    }
+}
+
 int loopNts(nts::Circuit *circuit)
 {
     std::string line;
@@ -22,11 +31,10 @@ int loopNts(nts::Circuit *circuit)
         if (line == "exit")
             return 0;
         if (line == "simulate")
-            std::cout << "simulate" << std::endl;
-            // circuit->simulate(1);
+            circuit->simulate(circuit->getTick());
         if (line == "display")
-            std::cout << "display" << std::endl;
-            // circuit->display();
-        std::cout << line << std::endl;
+            circuit->display();
+        if (line == "loop")
+            loopCommand(circuit);
     }
 }

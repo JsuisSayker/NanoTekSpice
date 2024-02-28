@@ -113,7 +113,7 @@ void nts::Parser::parseAndExtractLinkFromLine(const std::string line, int linePo
     }
     nts::IComponent *secondComponent = circuit->findComponent(parsedLines[1].type);
     if (secondComponent == nullptr) {
-       try {
+        try {
             throw UnknownComponentName("Unknown component name: " + parsedLines[1].type);
         } catch (const UnknownComponentName& e) {
             std::cerr << "Error: " << e.what() << std::endl;
@@ -121,7 +121,7 @@ void nts::Parser::parseAndExtractLinkFromLine(const std::string line, int linePo
     }
     // std::cout << "type 1 :" << parsedLines[0].type << "\nvalue 1 :" << parsedLines[0].value << std::endl;
     // std::cout << "type 2 :" << parsedLines[1].type << "\nvalue 2 :" << parsedLines[1].value << std::endl;
-    firstComponent->setLink(parsedLines[0].value, *secondComponent, parsedLines[1].value);
+    secondComponent->setLink(parsedLines[1].value, *firstComponent, parsedLines[0].value);
 }
 
 void nts::Parser::saveLine(const std::string line, int linePosition, nts::Circuit *circuit)
