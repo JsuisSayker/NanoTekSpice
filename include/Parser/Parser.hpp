@@ -43,7 +43,6 @@ namespace nts {
 
         protected:
             Section _section;
-        private:
     };
 }
 #endif /* !PARSER_HPP_ */
