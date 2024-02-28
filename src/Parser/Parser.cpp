@@ -119,8 +119,6 @@ void nts::Parser::parseAndExtractLinkFromLine(const std::string line, int linePo
             std::cerr << "Error: " << e.what() << std::endl;
         }
     }
-    // std::cout << "type 1 :" << parsedLines[0].type << "\nvalue 1 :" << parsedLines[0].value << std::endl;
-    // std::cout << "type 2 :" << parsedLines[1].type << "\nvalue 2 :" << parsedLines[1].value << std::endl;
     firstComponent->setLink(parsedLines[0].value, *secondComponent, parsedLines[1].value);
 }
 
@@ -188,8 +186,13 @@ void nts::Parser::parseFile(const std::string &filename, nts::Circuit *circuit)
     std::ifstream ifs(filename);
     int linePosition = 0;
     std::string line;
-    if (!ifs.is_open())
-        throw InvalidFileException("File:" + filename + " not found");
+    if (!ifs.is_open()) {
+        try {
+            throw InvalidFileException("File:" + filename + " not found");
+        } catch (const InvalidFileException& e) {
+            std::cerr << "Error: " << e.what() << std::endl;
+        }
+    }
 
     while (std::getline(ifs, line)) {
         line = trim(line);
@@ -199,6 +202,11 @@ void nts::Parser::parseFile(const std::string &filename, nts::Circuit *circuit)
         linePosition++;
     }
     ifs.close();
-    if (_section != LINKS)
-        throw MissingSectionException("Missing links section");
+    if (_section != LINKS) {
+        try {
+            throw MissingSectionException("Missing links section");
+        } catch (const MissingSectionException& e) {
+            std::cerr << "Error: " << e.what() << std::endl;
+        }
+    }
 }
