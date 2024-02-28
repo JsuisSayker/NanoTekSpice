@@ -36,19 +36,24 @@ void nts::Circuit::simulate(std::size_t tick)
         componentList[i].first->simulate(tick);
 }
 
+int nts::Circuit::getTick()
+{
+    return this->tick;
+}
+
 void nts::Circuit::display()
 {
     std::cout << "tick: " << this->tick << std::endl;
     std::cout << "input(s):" << std::endl;
     for (int i = 0; i < componentList.size(); i++) {
         if (dynamic_cast<nts::ClockComponent *>(componentList[i].first))
-            std::cout << componentList[i].second << ":" << componentList[i].first->compute(1) << std::endl;
+            std::cout << "  " << componentList[i].second << ": " << componentList[i].first->compute(1) << std::endl;
         if (dynamic_cast<nts::Input *>(componentList[i].first))
-            std::cout << componentList[i].second << ":" << componentList[i].first->compute(1) << std::endl;
+            std::cout << "  " << componentList[i].second << ": " << componentList[i].first->compute(1) << std::endl;
     }
     std::cout << "output(s):" << std::endl;
     for (int i = 0; i < componentList.size(); i++) {
         if (dynamic_cast<nts::Output *>(componentList[i].first))
-            std::cout << componentList[i].second << ":" << componentList[i].first->compute(1) << std::endl;
+            std::cout << "  " << componentList[i].second << ": " << componentList[i].first->compute(1) << std::endl;
     }
 }

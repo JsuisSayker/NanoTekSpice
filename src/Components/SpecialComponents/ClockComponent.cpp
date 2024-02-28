@@ -20,12 +20,10 @@ nts::Tristate nts::ClockComponent::compute(std::size_t pin)
     return this->value;
 }
 
-void nts::ClockComponent::simulate(std::size_t pin)
+void nts::ClockComponent::simulate(std::size_t tick)
 {
-    if (pin != 1)
-        throw "Error: pin index out of range";
-    if (this->value == nts::True)
-        this->value = nts::False;
-    else
+    if (this->value == nts::False)
         this->value = nts::True;
+    else
+        this->value = nts::False;
 }

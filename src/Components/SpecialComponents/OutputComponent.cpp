@@ -21,6 +21,11 @@ nts::Tristate nts::Output::compute(std::size_t pin)
 {
     if (pin != 1)
         throw "Error: pin index out of range";
+    if (link[0].first == nullptr) {
+        std::cerr << "Error: no link set" << std::endl;
+        return this->value;
+    }
+    this->value = link[0].first->compute(link[0].second);
     return this->value;
 }
 
