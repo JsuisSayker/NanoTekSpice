@@ -11,6 +11,7 @@ nts::AndComponent::AndComponent(): nts::AComponent()
 {
     link.push_back(std::make_pair(nullptr, 0));
     link.push_back(std::make_pair(nullptr, 0));
+    link.push_back(std::make_pair(nullptr, 0));
 }
 
 nts::Tristate nts::AndComponent::ThruthTable(nts::Tristate a, nts::Tristate b)

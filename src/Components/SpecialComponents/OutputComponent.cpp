@@ -9,6 +9,7 @@
 
 nts::Output::Output()
 {
+    link.push_back(std::make_pair(nullptr, 0));
     this->value = nts::Undefined;
 }
 

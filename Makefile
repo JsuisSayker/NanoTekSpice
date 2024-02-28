@@ -54,11 +54,14 @@ OBJ				=	$(OBJ_MAIN) $(OBJ_SRC) $(OBJ_PARSER)
 
 NAME			=	nanotekspice
 
-CFLAGS			=	-std=c++20 -Wall -Wextra -Werror
+CFLAGS			=	-std=c++20 -Wall -Wextra
 
 CPPFLAGS		=	-I./include/Components -I./include -I./include/Parser
 
 all:	$(NAME)
+
+debug:
+	g++ -o $(NAME) $(DIR_MAIN) $(DIR_SRC) $(DIR_PARSER) -ggdb3 $(CPPFLAGS) $(CFLAGS)
 
 $(NAME):	$(OBJ)
 	g++ -o $(NAME) $(OBJ) $(CPPFLAGS) $(CFLAGS)

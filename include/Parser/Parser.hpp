@@ -34,6 +34,7 @@ namespace nts {
 
             static std::string removeComment(std::string line);
             static std::string findSectionName(const std::string line);
+            static std::string trim(const std::string &str);
             static void addComponentToCircuitFromMatch(std::vector<ChipsetData> parsedLines, nts::Circuit *circuit);
             void saveLine(const std::string line, int linePosition, nts::Circuit *circuit);
             void parseFile(const std::string &filename, nts::Circuit *circuit);
