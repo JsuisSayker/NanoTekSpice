@@ -67,35 +67,13 @@ void nts::Parser::addComponentToCircuitFromMatch(std::vector<ChipsetData> parsed
     } else if (parsedLines[0].type == "not") {
         nts::NotComponent *notGateComponent = new nts::NotComponent();
         circuit->addComponent(notGateComponent, parsedLines[0].value);
-    // } else if (parsedLines[0].type == "4001") {
-    //     nts::C4001 *c4001 = new nts::C4001();
-    //     circuit->addComponent(c4001, parsedLines[0].value);
-    // } else if (parsedLines[0].type == "4008") {
-    //     nts::C4008 *c4008 = new nts::C4008();
-    //     circuit->addComponent(c4008, parsedLines[0].value);
-    // } else if (parsedLines[0].type == "4011") {
-    //     nts::C4011 *c4011 = new nts::C4011();
-    //     circuit->addComponent(c4011, parsedLines[0].value);
-    // } else if (parsedLines[0].type == "4030") {
-    //     nts::C4030 *c4030 = new nts::C4030();
-    //     circuit->addComponent(c4030, parsedLines[0].value);
-    // } else if (parsedLines[0].type == "4069") {
-    //     nts::C4069 *c4069 = new nts::C4069();
-    //     circuit->addComponent(c4069, parsedLines[0].value);
-    // } else if (parsedLines[0].type == "4071") {
-    //     nts::C4071 *c4071 = new nts::C4071();
-    //     circuit->addComponent(c4071, parsedLines[0].value);
-    // } else if (parsedLines[0].type == "4081") {
-    //     nts::C4081 *c4081 = new nts::C4081();
-    //     circuit->addComponent(c4081, parsedLines[0].value);
-    // } else if (parsedLines[0].type == "4514") {
-    //     nts::C4514 *c4514 = new nts::C4514();
-    //     circuit->addComponent(c4514, parsedLines[0].value);
-    // } else if (parsedLines[0].type == "4801") {
-    //     nts::C4801 *c4801 = new nts::C4801();
-    //     circuit->addComponent(c4801, parsedLines[0].value);
-    } else
-        throw UnknownComponentType("Unknown component type: " + parsedLines[0].type);
+    } else {
+        try {
+            throw UnknownComponentType("Unknown component type: " + parsedLines[0].type);
+        } catch (const UnknownComponentType& e) {
+            std::cerr << "Error: " << e.what() << std::endl;
+        }
+    }
 }
 
 void nts::Parser::parseAndExtractChipsetFromLine(const std::string line, int linePosition, nts::Circuit *circuit)
@@ -144,9 +122,6 @@ void nts::Parser::parseAndExtractLinkFromLine(const std::string line, int linePo
     // std::cout << "type 1 :" << parsedLines[0].type << "\nvalue 1 :" << parsedLines[0].value << std::endl;
     // std::cout << "type 2 :" << parsedLines[1].type << "\nvalue 2 :" << parsedLines[1].value << std::endl;
     firstComponent->setLink(parsedLines[0].value, *secondComponent, parsedLines[1].value);
-    // std::cout << "type 1 :" << entries[0].type << "\nvalue 1 :" << entries[0].value << std::endl;
-    // std::cout << "type 2 :" << entries[1].type << "\nvalue 2 :" << entries[1].value << std::endl;
-
 }
 
 void nts::Parser::saveLine(const std::string line, int linePosition, nts::Circuit *circuit)
