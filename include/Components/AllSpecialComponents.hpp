@@ -10,5 +10,8 @@
 
 #include "SpecialComponents/FalseComponent.hpp"
 #include "SpecialComponents/TrueComponent.hpp"
+#include "SpecialComponents/InputComponent.hpp"
+#include "SpecialComponents/ClockComponent.hpp"
+#include "SpecialComponents/OutputComponent.hpp"
 
 #endif /* !ALLSPECIALCOMPONENTS_HPP_ */
