@@ -8,7 +8,8 @@
 #ifndef CIRCUIT_HPP_
 #define CIRCUIT_HPP_
 
-#include <vector>
+#include <map>
+#include <memory>
 #include "IComponent.hpp"
 
 namespace nts
@@ -27,7 +28,7 @@ namespace nts
             void setLink(std::size_t pin, nts::IComponent &other, std::size_t otherPin){};
 
         protected:
-            std::vector<std::pair<IComponent *, std::string>> componentList;
+            std::map<std::string, IComponent *> componentList;
             int tick;
             nts::Tristate clock;
     };
