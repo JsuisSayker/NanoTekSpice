@@ -61,7 +61,8 @@ CPPFLAGS		=	-I./include/Components -I./include -I./include/Parser
 all:	$(NAME)
 
 debug:
-	g++ -o $(NAME) $(DIR_MAIN) $(DIR_SRC) $(DIR_PARSER) -ggdb3 $(CPPFLAGS) $(CFLAGS)
+	g++ -o $(NAME) $(DIR_MAIN) $(DIR_SRC) $(DIR_PARSER) -ggdb3 $(CPPFLAGS) \
+$(CFLAGS)
 
 $(NAME):	$(OBJ)
 	g++ -o $(NAME) $(OBJ) $(CPPFLAGS) $(CFLAGS)
