@@ -10,6 +10,7 @@
 
 #include <string>
 #include <fstream>
+#include <vector>
 #include "Circuit.hpp"
 
 namespace nts {
