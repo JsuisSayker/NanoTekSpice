@@ -8,21 +8,16 @@
 #ifndef GATE4071COMPONENT_HPP_
 #define GATE4071COMPONENT_HPP_
 
-#include "IComponent.hpp"
+#include "../AComponent.hpp"
 
 namespace nts
 {
-    class Gate4071Component: virtual public IComponent
+    class Gate4071Component: virtual public AComponent
     {
         public:
             Gate4071Component();
             ~Gate4071Component();
-
             nts::Tristate compute(std::size_t pin);
-            void setLink(std::size_t pin, nts::IComponent &other, std::size_t otherPin);
-
-        protected:
-        private:
     };
 }
 

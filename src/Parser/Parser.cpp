@@ -11,6 +11,7 @@
 #include "AllElementaryComponents.hpp"
 #include "GatesComponents/Gate4071Component.hpp"
 #include "ComponentFactory.hpp"
+#include "AllGateComponents.hpp"
 #include "Circuit.hpp"
 #include <algorithm>
 #include <vector>
@@ -48,25 +49,33 @@ void nts::Parser::addComponentToCircuitFromMatch(std::vector<ChipsetData> parsed
     if (parsedLines[0].type == "input") {
         std::unique_ptr<nts::IComponent> input = factory.createInputComponent();
         circuit->addComponent(input, parsedLines[0].value);
-    // } else if (parsedLines[0].type == "output") {
-    //     circuit->addComponent(factory.createOutputComponent().get(), parsedLines[0].value);
-    // } else if (parsedLines[0].type == "clock") {
-    //     circuit->addComponent(factory.createClockComponent().get(), parsedLines[0].value);
-    // } else if (parsedLines[0].type == "true") {
-    //     circuit->addComponent(factory.createTrueComponent().get(), parsedLines[0].value);
-    // } else if (parsedLines[0].type == "false") {
-    //     circuit->addComponent(factory.createFalseComponent().get(), parsedLines[0].value);
+    } else if (parsedLines[0].type == "output") {
+        std::unique_ptr<nts::IComponent> input = factory.createOutputComponent();
+        circuit->addComponent(input, parsedLines[0].value);
+    } else if (parsedLines[0].type == "clock") {
+        std::unique_ptr<nts::IComponent> input = factory.createClockComponent();
+        circuit->addComponent(input, parsedLines[0].value);
+    } else if (parsedLines[0].type == "true") {
+        std::unique_ptr<nts::IComponent> input = factory.createTrueComponent();
+        circuit->addComponent(input, parsedLines[0].value);
+    } else if (parsedLines[0].type == "false") {
+        std::unique_ptr<nts::IComponent> input = factory.createFalseComponent();
+        circuit->addComponent(input, parsedLines[0].value);
     } else if (parsedLines[0].type == "and") {
         std::unique_ptr<nts::IComponent> andComponent = factory.createAndComponent();
         circuit->addComponent(andComponent, parsedLines[0].value);
-    // } else if (parsedLines[0].type == "or") {
-    //     circuit->addComponent(factory.createOrComponent().get(), parsedLines[0].value);
-    // } else if (parsedLines[0].type == "xor") {
-    //     circuit->addComponent(factory.createXorComponent().get(), parsedLines[0].value);
-    // } else if (parsedLines[0].type == "not") {
-    //     circuit->addComponent(factory.createNotComponent().get(), parsedLines[0].value);
+    } else if (parsedLines[0].type == "or") {
+        std::unique_ptr<nts::IComponent> input = factory.createOutputComponent();
+        circuit->addComponent(input, parsedLines[0].value);
+    } else if (parsedLines[0].type == "xor") {
+        std::unique_ptr<nts::IComponent> input = factory.createXorComponent();
+        circuit->addComponent(input, parsedLines[0].value);
+    } else if (parsedLines[0].type == "not") {
+        std::unique_ptr<nts::IComponent> input = factory.createNotComponent();
+        circuit->addComponent(input, parsedLines[0].value);
     // } else if (parsedLines[0].type == "4071") {
-    //     circuit->addComponent(factory.create4071Component().get(), parsedLines[0].value);
+    //     std::unique_ptr<nts::IComponent> input = factory.();
+    //     circuit->addComponent(input, parsedLines[0].value);
     } else {
         try {
             throw UnknownComponentType("Unknown component type: " + parsedLines[0].type);
@@ -122,10 +131,16 @@ int nts::Parser::parseAndExtractLinkFromLine(const std::string line, int linePos
             return KO;
         }
     }
-    if (parsedLines[0].type == "out" || parsedLines[1].type == "out")
+    if (parsedLines[0].type == "out" || parsedLines[1].type == "out") {
+        printf("before setLink\n");
         firstComponent->setLink(parsedLines[0].value, *secondComponent, parsedLines[1].value);
-    else
+        printf("after setLink\n");
+    }
+    else {
+        printf("before setLink\n");
         secondComponent->setLink(parsedLines[1].value, *firstComponent, parsedLines[0].value);
+        printf("after setLink\n");
+    }
     return OK;
 }
 

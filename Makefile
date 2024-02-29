@@ -13,10 +13,13 @@ SRC 	=	Circuit.cpp								\
 
 SRC_COMPONENTS	=	AComponent.cpp					\
 					$(DIR_ELEM_COMPONENTS)			\
-					$(DIR_SRC_SPECIALS_COMPONENTS)
+					$(DIR_SRC_SPECIALS_COMPONENTS)	\
+					$(DIR_GATE_COMPONENTS)
 
 SRC_PARSER	=	Parser.cpp			\
 				ComponentFactory.cpp
+
+SRC_GATE_COMPONENTS	=	Gate4071Component.cpp	\
 
 SRC_ELEMENTARY_COMPONENTS	=	AndComponent.cpp	\
 								NotComponent.cpp	\
@@ -44,6 +47,8 @@ DIR_ELEM_COMPONENTS	=\
 DIR_SRC_SPECIALS_COMPONENTS	=\
 	$(addprefix SpecialComponents/, $(SRC_SPECIALS_COMPONENTS))
 
+DIR_GATE_COMPONENTS	=\
+	$(addprefix GatesComponents/, $(SRC_GATE_COMPONENTS))
 
 OBJ_MAIN		=	$(DIR_MAIN:.cpp=.o)
 
