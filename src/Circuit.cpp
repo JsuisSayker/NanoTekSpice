@@ -34,6 +34,7 @@ nts::IComponent *nts::Circuit::findComponent(std::string name)
 
 void nts::Circuit::simulate(std::size_t tick)
 {
+    this->tick = tick + 1;
     for (const auto& pair : componentList) {
         const std::string& name = pair.first;
         const std::unique_ptr<nts::IComponent>& componentPtr = pair.second;
