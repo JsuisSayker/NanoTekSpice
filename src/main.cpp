@@ -6,7 +6,6 @@
 */
 
 
-#include <memory>
 #include <iostream>
 #include "AllElementaryComponents.hpp"
 #include "AllSpecialComponents.hpp"

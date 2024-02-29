@@ -9,6 +9,7 @@
 #include "ParserExceptions.hpp"
 #include "AllSpecialComponents.hpp"
 #include "AllElementaryComponents.hpp"
+#include "ComponentFactory.hpp"
 #include "Circuit.hpp"
 #include <algorithm>
 #include <vector>
@@ -16,6 +17,7 @@
 #include <sstream>
 #include "macros.hpp"
 
+#include <memory>
 
 nts::Parser::Parser()
 {
@@ -41,33 +43,25 @@ std::string nts::Parser::findSectionName(const std::string line)
 
 void nts::Parser::addComponentToCircuitFromMatch(std::vector<ChipsetData> parsedLines, nts::Circuit *circuit)
 {
+    nts::ComponentFactory factory;
     if (parsedLines[0].type == "input") {
-        nts::Input *input = new nts::Input();
-        circuit->addComponent(input, parsedLines[0].value);
+        circuit->addComponent(factory.createInputComponent().get(), parsedLines[0].value);
     } else if (parsedLines[0].type == "output") {
-        nts::Output *output = new nts::Output();
-        circuit->addComponent(output, parsedLines[0].value);
+        circuit->addComponent(factory.createOutputComponent().get(), parsedLines[0].value);
     } else if (parsedLines[0].type == "clock") {
-        nts::ClockComponent *clock = new nts::ClockComponent();
-        circuit->addComponent(clock, parsedLines[0].value);
+        circuit->addComponent(factory.createClockComponent().get(), parsedLines[0].value);
     } else if (parsedLines[0].type == "true") {
-        nts::TrueComponent *trueComponent = new nts::TrueComponent();
-        circuit->addComponent(trueComponent, parsedLines[0].value);
+        circuit->addComponent(factory.createTrueComponent().get(), parsedLines[0].value);
     } else if (parsedLines[0].type == "false") {
-        nts::FalseComponent *falseComponent = new nts::FalseComponent();
-        circuit->addComponent(falseComponent, parsedLines[0].value);
+        circuit->addComponent(factory.createFalseComponent().get(), parsedLines[0].value);
     } else if (parsedLines[0].type == "and") {
-        nts::AndComponent *andGateComponent = new nts::AndComponent();
-        circuit->addComponent(andGateComponent, parsedLines[0].value);
+        circuit->addComponent(factory.createAndComponent().get(), parsedLines[0].value);
     } else if (parsedLines[0].type == "or") {
-        nts::OrComponent *orGateComponent = new nts::OrComponent();
-        circuit->addComponent(orGateComponent, parsedLines[0].value);
+        circuit->addComponent(factory.createOrComponent().get(), parsedLines[0].value);
     } else if (parsedLines[0].type == "xor") {
-        nts::XorComponent *xorGateComponent = new nts::XorComponent();
-        circuit->addComponent(xorGateComponent, parsedLines[0].value);
+        circuit->addComponent(factory.createXorComponent().get(), parsedLines[0].value);
     } else if (parsedLines[0].type == "not") {
-        nts::NotComponent *notGateComponent = new nts::NotComponent();
-        circuit->addComponent(notGateComponent, parsedLines[0].value);
+        circuit->addComponent(factory.createNotComponent().get(), parsedLines[0].value);
     } else {
         try {
             throw UnknownComponentType("Unknown component type: " + parsedLines[0].type);
@@ -105,7 +99,7 @@ int nts::Parser::parseAndExtractLinkFromLine(const std::string line, int linePos
             parsedLines.push_back(data);
         }
     }
-    nts::IComponent *firstComponent =  circuit->findComponent(parsedLines[0].type);
+    nts::IComponent *firstComponent = circuit->findComponent(parsedLines[0].type);
     if (firstComponent == nullptr) {
         try {
             throw UnknownComponentName("Unknown component name: " + parsedLines[0].type);
@@ -115,6 +109,7 @@ int nts::Parser::parseAndExtractLinkFromLine(const std::string line, int linePos
         }
     }
     nts::IComponent *secondComponent = circuit->findComponent(parsedLines[1].type);
+    std::cout << secondComponent << std::endl;
     if (secondComponent == nullptr) {
         try {
             throw UnknownComponentName("Unknown component name: " + parsedLines[1].type);
@@ -123,9 +118,10 @@ int nts::Parser::parseAndExtractLinkFromLine(const std::string line, int linePos
             return KO;
         }
     }
-    // std::cout << "type 1 :" << parsedLines[0].type << "\nvalue 1 :" << parsedLines[0].value << std::endl;
-    // std::cout << "type 2 :" << parsedLines[1].type << "\nvalue 2 :" << parsedLines[1].value << std::endl;
-    secondComponent->setLink(parsedLines[1].value, *firstComponent, parsedLines[0].value);
+    if (parsedLines[0].type == "out" || parsedLines[1].type == "out")
+        firstComponent->setLink(parsedLines[0].value, *secondComponent, parsedLines[1].value);
+    else
+        secondComponent->setLink(parsedLines[1].value, *firstComponent, parsedLines[0].value);
     return OK;
 }
 

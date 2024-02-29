@@ -17,7 +17,7 @@ nts::Circuit::Circuit()
 
 void nts::Circuit::addComponent(IComponent *component, std::string name)
 {
-    this->componentList[name] = component;
+    componentList[name] = component;
 }
 
 nts::IComponent *nts::Circuit::findComponent(std::string name)

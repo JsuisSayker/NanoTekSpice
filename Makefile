@@ -15,7 +15,8 @@ SRC_COMPONENTS	=	AComponent.cpp					\
 					$(DIR_ELEM_COMPONENTS)			\
 					$(DIR_SRC_SPECIALS_COMPONENTS)
 
-SRC_PARSER	=	Parser.cpp
+SRC_PARSER	=	Parser.cpp			\
+				ComponentFactory.cpp
 
 SRC_ELEMENTARY_COMPONENTS	=	AndComponent.cpp	\
 								NotComponent.cpp	\
