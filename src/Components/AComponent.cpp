@@ -19,6 +19,7 @@ void nts::AComponent::setLink(size_t pin, IComponent &other, size_t otherPin)
         std::cerr << "Error: Pin number out of range\n";
 }
 
+
 nts::Tristate nts::AComponent::getLink(size_t pin) const
 {
     return nts::Tristate::Undefined;

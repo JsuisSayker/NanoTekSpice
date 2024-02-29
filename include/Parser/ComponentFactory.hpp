@@ -30,6 +30,7 @@ namespace nts {
             std::unique_ptr<nts::IComponent> createInputComponent();
             std::unique_ptr<nts::IComponent> createOutputComponent();
             std::unique_ptr<nts::IComponent> createClockComponent();
+            // std::unique_ptr<nts::IComponent> create4071Component();
 
         protected:
             std::unordered_map<std::string, std::function<std::unique_ptr<nts::IComponent>()>> componentCreator;
