@@ -27,3 +27,8 @@ void nts::ClockComponent::simulate(std::size_t tick)
     else
         this->value = nts::False;
 }
+
+void nts::ClockComponent::setValue(nts::Tristate value)
+{
+    this->value = value;
+}

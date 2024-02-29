@@ -19,8 +19,11 @@ namespace nts
             ~Input();
             nts::Tristate compute(std::size_t pin);
             void setValue(nts::Tristate value);
+            void simulate(std::size_t tick);
+
         protected:
             nts::Tristate value;
+            nts::Tristate newValue;
     };
 }
 

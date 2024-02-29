@@ -7,6 +7,7 @@
 
 #include "Circuit.hpp"
 #include <iostream>
+#include "Parser/ParserExceptions.hpp"
 #include "SpecialComponents/InputComponent.hpp"
 #include "SpecialComponents/OutputComponent.hpp"
 #include "SpecialComponents/ClockComponent.hpp"
@@ -40,6 +41,44 @@ void nts::Circuit::simulate(std::size_t tick)
         const std::unique_ptr<nts::IComponent>& componentPtr = pair.second;
         componentPtr->simulate(tick);
     }
+}
+
+void nts::Circuit::setState(std::string name, std::string value)
+{
+    for (const auto& pair : componentList) {
+        const std::string& nameComponent = pair.first;
+        const std::unique_ptr<nts::IComponent>& componentPtr = pair.second;
+        if (nameComponent == name) {
+            nts::Input* inputComponent = dynamic_cast<nts::Input*>(componentPtr.get());
+            nts::Output* outputComponent = dynamic_cast<nts::Output*>(componentPtr.get());
+            if (inputComponent != nullptr) {
+                inputComponent->setValue(getTristateValue(value));
+                return;
+            }
+            if (outputComponent != nullptr) {
+                outputComponent->setValue(getTristateValue(value));
+                return;
+            } else {
+                try {
+                    throw UnknownComponentName("This component does not exist.");
+                } catch (UnknownComponentName &e) {
+                    std::cerr << e.what() << std::endl;
+                }
+            }
+        }
+    }
+
+}
+
+nts::Tristate nts::Circuit::getTristateValue(std::string name)
+{
+    if (name == "U")
+        return nts::Tristate::Undefined;
+    if (name == "1")
+        return nts::Tristate::True;
+    if (name == "0")
+        return nts::Tristate::False;
+    return nts::Tristate::Undefined;
 }
 
 int nts::Circuit::getTick()
