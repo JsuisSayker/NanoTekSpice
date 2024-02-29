@@ -50,29 +50,29 @@ void nts::Parser::addComponentToCircuitFromMatch(std::vector<ChipsetData> parsed
         std::unique_ptr<nts::IComponent> input = factory.createInputComponent();
         circuit->addComponent(input, parsedLines[0].value);
     } else if (parsedLines[0].type == "output") {
-        std::unique_ptr<nts::IComponent> input = factory.createOutputComponent();
-        circuit->addComponent(input, parsedLines[0].value);
+        std::unique_ptr<nts::IComponent> output = factory.createOutputComponent();
+        circuit->addComponent(output, parsedLines[0].value);
     } else if (parsedLines[0].type == "clock") {
-        std::unique_ptr<nts::IComponent> input = factory.createClockComponent();
-        circuit->addComponent(input, parsedLines[0].value);
+        std::unique_ptr<nts::IComponent> clock = factory.createClockComponent();
+        circuit->addComponent(clock, parsedLines[0].value);
     } else if (parsedLines[0].type == "true") {
-        std::unique_ptr<nts::IComponent> input = factory.createTrueComponent();
-        circuit->addComponent(input, parsedLines[0].value);
+        std::unique_ptr<nts::IComponent> trueComponent = factory.createTrueComponent();
+        circuit->addComponent(trueComponent, parsedLines[0].value);
     } else if (parsedLines[0].type == "false") {
-        std::unique_ptr<nts::IComponent> input = factory.createFalseComponent();
-        circuit->addComponent(input, parsedLines[0].value);
+        std::unique_ptr<nts::IComponent> falseComponent = factory.createFalseComponent();
+        circuit->addComponent(falseComponent, parsedLines[0].value);
     } else if (parsedLines[0].type == "and") {
         std::unique_ptr<nts::IComponent> andComponent = factory.createAndComponent();
         circuit->addComponent(andComponent, parsedLines[0].value);
     } else if (parsedLines[0].type == "or") {
-        std::unique_ptr<nts::IComponent> input = factory.createOutputComponent();
-        circuit->addComponent(input, parsedLines[0].value);
+        std::unique_ptr<nts::IComponent> orComponent = factory.createOrComponent();
+        circuit->addComponent(orComponent, parsedLines[0].value);
     } else if (parsedLines[0].type == "xor") {
-        std::unique_ptr<nts::IComponent> input = factory.createXorComponent();
-        circuit->addComponent(input, parsedLines[0].value);
+        std::unique_ptr<nts::IComponent> xorComponent = factory.createXorComponent();
+        circuit->addComponent(xorComponent, parsedLines[0].value);
     } else if (parsedLines[0].type == "not") {
-        std::unique_ptr<nts::IComponent> input = factory.createNotComponent();
-        circuit->addComponent(input, parsedLines[0].value);
+        std::unique_ptr<nts::IComponent> notComponent = factory.createNotComponent();
+        circuit->addComponent(notComponent, parsedLines[0].value);
     // } else if (parsedLines[0].type == "4071") {
     //     std::unique_ptr<nts::IComponent> input = factory.();
     //     circuit->addComponent(input, parsedLines[0].value);
@@ -131,16 +131,7 @@ int nts::Parser::parseAndExtractLinkFromLine(const std::string line, int linePos
             return KO;
         }
     }
-    if (parsedLines[0].type == "out" || parsedLines[1].type == "out") {
-        printf("before setLink\n");
-        firstComponent->setLink(parsedLines[0].value, *secondComponent, parsedLines[1].value);
-        printf("after setLink\n");
-    }
-    else {
-        printf("before setLink\n");
-        secondComponent->setLink(parsedLines[1].value, *firstComponent, parsedLines[0].value);
-        printf("after setLink\n");
-    }
+    secondComponent->setLink(parsedLines[1].value, *firstComponent, parsedLines[0].value);
     return OK;
 }
 
