@@ -113,6 +113,14 @@ int nts::Parser::parseAndExtractLinkFromLine(const std::string line, int linePos
             parsedLines.push_back(data);
         }
     }
+    if (!parsedLines[0].value || !parsedLines[1].value) {
+        try {
+            throw InvalidLinkException("Invalid link value");
+        } catch (const InvalidLinkException& e) {
+            std::cerr << "Error: " << e.what() << std::endl;
+            return KO;
+        }
+    }
     nts::IComponent *firstComponent = circuit->findComponent(parsedLines[0].type);
     if (firstComponent == nullptr) {
         try {
@@ -131,7 +139,10 @@ int nts::Parser::parseAndExtractLinkFromLine(const std::string line, int linePos
             return KO;
         }
     }
-    secondComponent->setLink(parsedLines[1].value, *firstComponent, parsedLines[0].value);
+    if (parsedLines[0].type == "output" || parsedLines[0].type == "gate" || parsedLines[1].type == "output" || parsedLines[1].type == "gate")
+        firstComponent->setLink(parsedLines[0].value, *secondComponent, parsedLines[1].value);
+    else
+        secondComponent->setLink(parsedLines[1].value, *firstComponent, parsedLines[0].value);
     return OK;
 }
 
