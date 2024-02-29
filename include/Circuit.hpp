@@ -20,7 +20,7 @@ namespace nts
             Circuit();
             ~Circuit(){};
             void simulate(std::size_t tick);
-            void addComponent(IComponent *component, std::string name);
+            void addComponent(std::unique_ptr<IComponent> &component, std::string name);
             IComponent *findComponent(std::string name);
             void display();
             int getTick();
@@ -28,7 +28,7 @@ namespace nts
             void setLink(std::size_t pin, nts::IComponent &other, std::size_t otherPin){};
 
         protected:
-            std::map<std::string, IComponent *> componentList;
+            std::map<std::string, std::unique_ptr<IComponent>> componentList;
             int tick;
             nts::Tristate clock;
     };

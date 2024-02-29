@@ -10,6 +10,7 @@
 #include "AllSpecialComponents.hpp"
 #include "AllElementaryComponents.hpp"
 #include "ComponentFactory.hpp"
+#include "AllGateComponents.hpp"
 #include "Circuit.hpp"
 #include <algorithm>
 #include <vector>
@@ -62,6 +63,11 @@ void nts::Parser::addComponentToCircuitFromMatch(std::vector<ChipsetData> parsed
         circuit->addComponent(factory.createXorComponent().get(), parsedLines[0].value);
     } else if (parsedLines[0].type == "not") {
         circuit->addComponent(factory.createNotComponent().get(), parsedLines[0].value);
+        nts::NotComponent *notGateComponent = new nts::NotComponent();
+        circuit->addComponent(notGateComponent, parsedLines[0].value);
+    // } else if (parsedLines[0].type == "4071") {
+        // nts::Gate4071Component *gate4071Component = new nts::Gate4071Component();
+        // circuit->addComponent(gate4071Component, parsedLines[0].value);
     } else {
         try {
             throw UnknownComponentType("Unknown component type: " + parsedLines[0].type);
@@ -118,10 +124,16 @@ int nts::Parser::parseAndExtractLinkFromLine(const std::string line, int linePos
             return KO;
         }
     }
-    if (parsedLines[0].type == "out" || parsedLines[1].type == "out")
+    if (parsedLines[0].type == "out" || parsedLines[1].type == "out") {
+        printf("before setLink\n");
         firstComponent->setLink(parsedLines[0].value, *secondComponent, parsedLines[1].value);
-    else
+        printf("after setLink\n");
+    }
+    else {
+        printf("before setLink\n");
         secondComponent->setLink(parsedLines[1].value, *firstComponent, parsedLines[0].value);
+        printf("after setLink\n");
+    }
     return OK;
 }
 

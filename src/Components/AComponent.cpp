@@ -38,3 +38,8 @@ std::ostream &operator<<(std::ostream &s, nts::Tristate v)
         return s;
     }
 }
+
+nts::Tristate nts::AComponent::compute(std::size_t pin)
+{
+    return this->link[pin].first->compute(this->link[pin].second);
+}

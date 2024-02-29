@@ -6,6 +6,7 @@
 */
 
 #include "Circuit.hpp"
+#include <iostream>
 #include "SpecialComponents/InputComponent.hpp"
 #include "SpecialComponents/OutputComponent.hpp"
 #include "SpecialComponents/ClockComponent.hpp"
@@ -15,21 +16,30 @@ nts::Circuit::Circuit()
     tick = 0;
 }
 
-void nts::Circuit::addComponent(IComponent *component, std::string name)
+void nts::Circuit::addComponent(std::unique_ptr<nts::IComponent> &component, std::string name)
 {
-    componentList[name] = component;
+    componentList[name] = std::move(component);
 }
 
 nts::IComponent *nts::Circuit::findComponent(std::string name)
 {
-    return componentList[name];
+    for (const auto& pair : componentList) {
+        const std::string& name = pair.first;
+        const std::unique_ptr<nts::IComponent>& componentPtr = pair.second;
+        if (name == name)
+            return componentPtr.get();
+    }
+    return nullptr;
 }
 
 void nts::Circuit::simulate(std::size_t tick)
 {
     this->tick = tick + 1;
-    for (std::pair<std::string, IComponent *> component : componentList)
-        component.second->simulate(tick);
+    for (const auto& pair : componentList) {
+        const std::string& name = pair.first;
+        const std::unique_ptr<nts::IComponent>& componentPtr = pair.second;
+        componentPtr->simulate(tick);
+    }
 }
 
 int nts::Circuit::getTick()
