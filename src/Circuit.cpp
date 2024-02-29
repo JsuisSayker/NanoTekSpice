@@ -24,9 +24,9 @@ void nts::Circuit::addComponent(std::unique_ptr<nts::IComponent> &component, std
 nts::IComponent *nts::Circuit::findComponent(std::string name)
 {
     for (const auto& pair : componentList) {
-        const std::string& name = pair.first;
+        const std::string& nameComponent = pair.first;
         const std::unique_ptr<nts::IComponent>& componentPtr = pair.second;
-        if (name == name)
+        if (nameComponent == name)
             return componentPtr.get();
     }
     return nullptr;
