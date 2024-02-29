@@ -58,13 +58,16 @@ void nts::Parser::addComponentToCircuitFromMatch(std::vector<ChipsetData> parsed
     // } else if (parsedLines[0].type == "false") {
     //     circuit->addComponent(factory.createFalseComponent().get(), parsedLines[0].value);
     } else if (parsedLines[0].type == "and") {
-        circuit->addComponent(factory.createAndComponent().get(), parsedLines[0].value);
-    } else if (parsedLines[0].type == "or") {
-        circuit->addComponent(factory.createOrComponent().get(), parsedLines[0].value);
-    } else if (parsedLines[0].type == "xor") {
-        circuit->addComponent(factory.createXorComponent().get(), parsedLines[0].value);
-    } else if (parsedLines[0].type == "not") {
-        circuit->addComponent(factory.createNotComponent().get(), parsedLines[0].value);
+        std::unique_ptr<nts::IComponent> andComponent = factory.createAndComponent();
+        circuit->addComponent(andComponent, parsedLines[0].value);
+    // } else if (parsedLines[0].type == "or") {
+    //     circuit->addComponent(factory.createOrComponent().get(), parsedLines[0].value);
+    // } else if (parsedLines[0].type == "xor") {
+    //     circuit->addComponent(factory.createXorComponent().get(), parsedLines[0].value);
+    // } else if (parsedLines[0].type == "not") {
+    //     circuit->addComponent(factory.createNotComponent().get(), parsedLines[0].value);
+    // } else if (parsedLines[0].type == "4071") {
+    //     circuit->addComponent(factory.create4071Component().get(), parsedLines[0].value);
     } else {
         try {
             throw UnknownComponentType("Unknown component type: " + parsedLines[0].type);

@@ -35,8 +35,9 @@ nts::IComponent *nts::Circuit::findComponent(std::string name)
 void nts::Circuit::simulate(std::size_t tick)
 {
     this->tick = tick + 1;
-    for (std::pair<std::string, IComponent *> component : componentList)
-        component.second->simulate(tick);
+    for (const auto& pair : componentList) {
+        pair.second->simulate(tick);
+    }
 }
 
 int nts::Circuit::getTick()
