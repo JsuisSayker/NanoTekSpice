@@ -24,7 +24,7 @@ void nts::ClockComponent::simulate(std::size_t tick)
 {
     if (this->value == nts::False)
         this->value = nts::True;
-    else
+    else if (this->value == nts::True)
         this->value = nts::False;
 }
 

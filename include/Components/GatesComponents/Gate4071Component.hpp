@@ -12,12 +12,11 @@
 
 namespace nts
 {
-    class Gate4071Component: virtual public AComponent
+    class Gate4071Component: virtual public nts::AComponent
     {
         public:
             Gate4071Component();
-            ~Gate4071Component();
-            nts::Tristate compute(std::size_t pin);
+            nts::Tristate compute(std::size_t pin); 
     };
 }
 
