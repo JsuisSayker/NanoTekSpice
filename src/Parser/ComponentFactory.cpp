@@ -8,7 +8,7 @@
 #include "ComponentFactory.hpp"
 #include "AllElementaryComponents.hpp"
 #include "AllSpecialComponents.hpp"
-#include "GatesComponents/Gate4071Component.hpp"
+#include "AllGateComponents.hpp"
 
 nts::ComponentFactory::ComponentFactory()
 {
@@ -22,6 +22,7 @@ nts::ComponentFactory::ComponentFactory()
     componentCreator["output"] = [this](){ return createOutputComponent();};
     componentCreator["clock"] = [this](){ return createClockComponent();};
     componentCreator["4071"] = [this](){ return create4071Component();};
+    componentCreator["4001"] = [this](){ return create4001Component();};
 }
 
 std::unique_ptr<nts::IComponent> nts::ComponentFactory::createComponent(const std::string &type)
@@ -80,6 +81,11 @@ std::unique_ptr<nts::IComponent> nts::ComponentFactory::createClockComponent()
 std::unique_ptr<nts::IComponent> nts::ComponentFactory::create4071Component()
 {
     return std::make_unique<nts::Gate4071Component>();
+}
+
+std::unique_ptr<nts::IComponent> nts::ComponentFactory::create4001Component()
+{
+    return std::make_unique<nts::Gate4001Component>();
 }
 
 nts::ComponentFactory::~ComponentFactory()

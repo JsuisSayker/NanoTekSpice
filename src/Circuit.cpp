@@ -8,9 +8,7 @@
 #include "Circuit.hpp"
 #include <iostream>
 #include "Parser/ParserExceptions.hpp"
-#include "SpecialComponents/InputComponent.hpp"
-#include "SpecialComponents/OutputComponent.hpp"
-#include "SpecialComponents/ClockComponent.hpp"
+#include "AllSpecialComponents.hpp"
 
 nts::Circuit::Circuit()
 {

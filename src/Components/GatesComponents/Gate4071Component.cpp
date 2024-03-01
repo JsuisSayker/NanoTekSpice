@@ -32,26 +32,6 @@ nts::Gate4071Component::Gate4071Component()
     this->link.push_back(std::make_pair(or4.get(), 2));
     this->link.push_back(std::make_pair(or4.get(), 1));
     this->link.push_back(std::make_pair(nullptr, 0));
-
-    // this->link[0] = std::make_pair(or1.get(), 1);
-    // this->link[1] = std::make_pair(or1.get(), 2);
-    // this->link[2] = std::make_pair(or1.get(), 3);
-// 
-    // this->link[3] = std::make_pair(or2.get(), 3);
-    // this->link[4] = std::make_pair(or2.get(), 1);
-    // this->link[5] = std::make_pair(or2.get(), 2);
-// 
-    // this->link[7] = std::make_pair(or3.get(), 1);
-    // this->link[8] = std::make_pair(or3.get(), 2);
-    // this->link[9] = std::make_pair(or3.get(), 3);
-// 
-    // this->link[10] = std::make_pair(or4.get(), 1);
-    // this->link[11] = std::make_pair(or4.get(), 2);
-    // this->link[12] = std::make_pair(or4.get(), 3);
-// 
-    // this->link[10] = std::make_pair(or4.get(), 1);
-    // this->link[11] = std::make_pair(or4.get(), 2);
-    // this->link[12] = std::make_pair(or4.get(), 3);
 }
 
 nts::Tristate nts::Gate4071Component::compute(std::size_t pin)
