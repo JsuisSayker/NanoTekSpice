@@ -18,6 +18,7 @@ namespace nts
             Gate4069Component();
             nts::Tristate compute(std::size_t pin); 
             void setLink(std::size_t pin, nts::IComponent &other, std::size_t otherPin);
+            nts::Tristate ThruthTable(nts::Tristate a);
         protected:
             std::vector<std::unique_ptr<nts::IComponent>> invComponentsList;
     };

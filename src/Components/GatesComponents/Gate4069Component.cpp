@@ -42,7 +42,11 @@ nts::Tristate nts::Gate4069Component::compute(std::size_t pin)
 {
     if (pin > this->link.size())
         throw "Pin does not exist";
-    return link[pin - 1].first->compute(link[pin - 1].second);
+    if (pin == 2 || pin == 4 || pin == 6)
+        return this->link[pin - 2].first->compute(link[pin - 2].second);
+    if (pin == 8 || pin == 10 || pin == 12)
+        return this->link[pin].first->compute(link[pin].second);
+    return nts::Tristate::Undefined;
 }
 
 void nts::Gate4069Component::setLink(std::size_t pin, nts::IComponent &other, std::size_t otherPin)
