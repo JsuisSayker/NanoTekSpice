@@ -17,6 +17,9 @@ namespace nts
         public:
             Gate4071Component();
             nts::Tristate compute(std::size_t pin); 
+            void setLink(std::size_t pin, nts::IComponent &other, std::size_t otherPin);
+        protected:
+            std::vector<std::unique_ptr<nts::IComponent>> orComponentsList;
     };
 }
 

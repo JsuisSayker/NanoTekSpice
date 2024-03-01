@@ -23,5 +23,7 @@ nts::Tristate nts::NotComponent::ThruthTable(nts::Tristate a)
 
 nts::Tristate nts::NotComponent::compute(std::size_t pin)
 {
+    if (pin != 1)
+        throw "Error: pin index not valid";
     return ThruthTable(link[0].first->compute(link[0].second));
 }

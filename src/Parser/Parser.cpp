@@ -158,12 +158,10 @@ int nts::Parser::parseAndExtractLinkFromLine(const std::string line, int linePos
             return KO;
         }
     }
-    nts::IComponent *firstValueOutput = dynamic_cast<nts::Output*>(firstComponent);
-    nts::IComponent *firstValueInput = dynamic_cast<nts::Input*>(firstComponent);
-    if (firstValueOutput != nullptr || firstValueInput != nullptr)
-        firstComponent->setLink(parsedLines[0].value, *secondComponent, parsedLines[1].value);
-    else
+    if (dynamic_cast<nts::Output*>(secondComponent) || dynamic_cast<nts::Input*>(firstComponent))
         secondComponent->setLink(parsedLines[1].value, *firstComponent, parsedLines[0].value);
+    else
+        firstComponent->setLink(parsedLines[0].value, *secondComponent, parsedLines[1].value);
     return OK;
 }
 

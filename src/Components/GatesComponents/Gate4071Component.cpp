@@ -7,42 +7,82 @@
 
 #include <memory>
 #include "Parser/ComponentFactory.hpp"
-#include "ElementaryComponents/OrComponent.hpp"
+#include "AllElementaryComponents.hpp"
+#include "AllSpecialComponents.hpp"
 #include "GatesComponents/Gate4071Component.hpp"
 
 nts::Gate4071Component::Gate4071Component()
 {
     ComponentFactory cf;
-    std::unique_ptr<nts::IComponent> or1 = cf.createOrComponent();
-    std::unique_ptr<nts::IComponent> or2 = cf.createOrComponent();
-    std::unique_ptr<nts::IComponent> or3 = cf.createOrComponent();
-    std::unique_ptr<nts::IComponent> or4 = cf.createOrComponent();
 
-    this->link.push_back(std::make_pair(or1.get(), 1));
-    this->link.push_back(std::make_pair(or1.get(), 2));
-    this->link.push_back(std::make_pair(or1.get(), 3));
-    this->link.push_back(std::make_pair(or2.get(), 3));
-    this->link.push_back(std::make_pair(or2.get(), 2));
-    this->link.push_back(std::make_pair(or2.get(), 1));
+    this->orComponentsList.push_back(cf.createOrComponent());
+    this->orComponentsList.push_back(cf.createOrComponent());
+    this->orComponentsList.push_back(cf.createOrComponent());
+    this->orComponentsList.push_back(cf.createOrComponent());
+
+    this->link.push_back(std::make_pair(this->orComponentsList[0].get(), 1));
+    this->link.push_back(std::make_pair(this->orComponentsList[0].get(), 2));
+    this->link.push_back(std::make_pair(this->orComponentsList[0].get(), 3));
+    this->link.push_back(std::make_pair(this->orComponentsList[1].get(), 3));
+    this->link.push_back(std::make_pair(this->orComponentsList[1].get(), 2));
+    this->link.push_back(std::make_pair(this->orComponentsList[1].get(), 1));
     this->link.push_back(std::make_pair(nullptr, 0));
-    this->link.push_back(std::make_pair(or3.get(), 1));
-    this->link.push_back(std::make_pair(or3.get(), 2));
-    this->link.push_back(std::make_pair(or3.get(), 3));
-    this->link.push_back(std::make_pair(or4.get(), 3));
-    this->link.push_back(std::make_pair(or4.get(), 2));
-    this->link.push_back(std::make_pair(or4.get(), 1));
+    this->link.push_back(std::make_pair(this->orComponentsList[2].get(), 1));
+    this->link.push_back(std::make_pair(this->orComponentsList[2].get(), 2));
+    this->link.push_back(std::make_pair(this->orComponentsList[2].get(), 3));
+    this->link.push_back(std::make_pair(this->orComponentsList[3].get(), 3));
+    this->link.push_back(std::make_pair(this->orComponentsList[3].get(), 2));
+    this->link.push_back(std::make_pair(this->orComponentsList[3].get(), 1));
     this->link.push_back(std::make_pair(nullptr, 0));
 }
 
 nts::Tristate nts::Gate4071Component::compute(std::size_t pin)
 {
-    if (pin == 3)
-        return this->link[0].first->compute(this->link[0].second);
-    if (pin == 4)
-        return this->link[3].first->compute(this->link[3].second);
-    if (pin == 10)
-        return this->link[7].first->compute(this->link[7].second);
-    if (pin == 11)
-        return this->link[10].first->compute(this->link[10].second);
-    return nts::Tristate::Undefined;
+    if (pin > this->link.size())
+        throw "Pin does not exist";
+    return link[pin - 1].first->compute(link[pin - 1].second);
+}
+
+void nts::Gate4071Component::setLink(std::size_t pin, nts::IComponent &other, std::size_t otherPin)
+{
+    switch (pin) {
+        case 1:
+            orComponentsList[0]->setLink(1, other, otherPin);
+            break;
+        case 2:
+            orComponentsList[0]->setLink(2, other, otherPin);
+            break;
+        case 3:
+            orComponentsList[0]->setLink(3, other, otherPin);
+            break;
+        case 4:
+            orComponentsList[1]->setLink(3, other, otherPin);
+            break;
+        case 5:
+            orComponentsList[1]->setLink(2, other, otherPin);
+            break;
+        case 6:
+            orComponentsList[1]->setLink(1, other, otherPin);
+            break;
+        case 8:
+            orComponentsList[2]->setLink(1, other, otherPin);
+            break;
+        case 9:
+            orComponentsList[2]->setLink(2, other, otherPin);
+            break;
+        case 10:
+            orComponentsList[2]->setLink(3, other, otherPin);
+            break;
+        case 11:
+            orComponentsList[3]->setLink(3, other, otherPin);
+            break;
+        case 12:
+            orComponentsList[3]->setLink(2, other, otherPin);
+            break;
+        case 13:
+            orComponentsList[3]->setLink(1, other, otherPin);
+            break;
+        default:
+            break;
+    }
 }

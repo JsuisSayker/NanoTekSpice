@@ -11,6 +11,7 @@ nts::OrComponent::OrComponent(): nts::AComponent()
 {
     link.push_back(std::make_pair(nullptr, 0));
     link.push_back(std::make_pair(nullptr, 0));
+    link.push_back(std::make_pair(nullptr, 0));
 }
 
 nts::Tristate nts::OrComponent::ThruthTable(nts::Tristate a, nts::Tristate b)
@@ -29,6 +30,8 @@ nts::Tristate nts::OrComponent::compute(std::size_t pin)
         return link[0].first->compute(link[0].second);
     if (pin == 2)
         return link[1].first->compute(link[1].second);
-    else
+    else {
+
         return ThruthTable(link[0].first->compute(link[0].second), link[1].first->compute(link[1].second));
+    }
 }
