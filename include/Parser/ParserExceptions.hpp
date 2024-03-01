@@ -74,6 +74,15 @@ class InvalidLinkException : public std::exception {
         std::string _message;
 };
 
+class ComponentNameAlreadyExists : public std::exception {
+    public:
+        ComponentNameAlreadyExists(const std::string &message) : _message(message) {}
+        const char *what() const noexcept override { return _message.c_str(); }
+
+    private:
+        std::string _message;
+};
+
 // class CustomException : public std::exception {
 //     public:
 //         CustomException(const std::string &message) : _message(message) {}
