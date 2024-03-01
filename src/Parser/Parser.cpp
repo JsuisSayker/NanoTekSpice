@@ -93,6 +93,14 @@ int nts::Parser::parseAndExtractChipsetFromLine(const std::string line, int line
         iss >> data.type >> data.value;
         parsedLines.push_back(data);
     }
+    if (circuit->findComponent(parsedLines[0].value) != nullptr) {
+        try {
+            throw ComponentNameAlreadyExists("Component name already exists: " + parsedLines[0].value);
+        } catch (const ComponentNameAlreadyExists& e) {
+            std::cerr << "Error: " << e.what() << std::endl;
+            return KO;
+        }
+    }
     addComponentToCircuitFromMatch(parsedLines, circuit);
     return OK;
 }
@@ -108,7 +116,16 @@ int nts::Parser::parseAndExtractLinkFromLine(const std::string line, int linePos
         size_t pos = token.find(':');
         if (pos != std::string::npos) {
             data.type = token.substr(0, pos);
-            data.value = std::stoi(token.substr(pos + 1));
+            try {
+                data.value = std::stoi(token.substr(pos + 1));
+            } catch (const std::invalid_argument& e) {
+                try {
+                    throw InvalidLinkException("Missing link value");
+                } catch (const InvalidLinkException& e) {
+                    std::cerr << "Error: " << e.what() << std::endl;
+                    return KO;
+                }
+            }
             parsedLines.push_back(data);
         }
     }
@@ -138,7 +155,7 @@ int nts::Parser::parseAndExtractLinkFromLine(const std::string line, int linePos
             return KO;
         }
     }
-    if (parsedLines[0].type == "out" || parsedLines[0].type == "gate")
+    if ((parsedLines[0].type == "out" || parsedLines[0].type == "gate") && (parsedLines[1].type == "out" || parsedLines[1].type == "gate"))
         firstComponent->setLink(parsedLines[0].value, *secondComponent, parsedLines[1].value);
     else
         secondComponent->setLink(parsedLines[1].value, *firstComponent, parsedLines[0].value);
