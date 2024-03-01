@@ -8,10 +8,19 @@
 #include "IComponent.hpp"
 #include "Circuit.hpp"
 #include "ParserExceptions.hpp"
+#include <csignal>
 
-int loopCommand(nts::Circuit *circuit)
+bool isLoopRunning;
+
+void signalHandler(int signum)
 {
-    while (1)
+    if (signum == SIGINT)
+        isLoopRunning = false;
+}
+
+void loopCommand(nts::Circuit *circuit, bool *isLoopRunning)
+{
+    while ((*isLoopRunning))
     {
         circuit->simulate(circuit->getTick());
         circuit->display();
@@ -54,21 +63,25 @@ void changeValue(nts::Circuit *circuit, std::string line)
 int loopNts(nts::Circuit *circuit)
 {
     std::string line;
-    while (1)
+    bool mainRunner = true;
+    signal(SIGINT, signalHandler);
+    while (mainRunner)
     {
+        isLoopRunning = true;
         std::cout << "> ";
         if (!std::getline(std::cin, line)) {
             if (std::cin.eof())
-                return 0;
+                mainRunner = false;
         }
         if (line == "exit")
-            return 0;
+            mainRunner = false;
         if (line == "simulate")
             circuit->simulate(circuit->getTick());
         if (line == "display")
             circuit->display();
         if (line == "loop")
-            loopCommand(circuit);
+            loopCommand(circuit, &isLoopRunning);
         changeValue(circuit, line);
     }
+    return 0;
 }
