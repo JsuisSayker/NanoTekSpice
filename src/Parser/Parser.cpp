@@ -155,7 +155,7 @@ int nts::Parser::parseAndExtractLinkFromLine(const std::string line, int linePos
             return KO;
         }
     }
-    if ((parsedLines[0].type == "out" && parsedLines[0].type == "gate") || (parsedLines[1].type == "out" && parsedLines[1].type == "gate"))
+    if ((parsedLines[0].type == "out" || parsedLines[0].type == "gate") && (parsedLines[1].type == "out" || parsedLines[1].type == "gate"))
         firstComponent->setLink(parsedLines[0].value, *secondComponent, parsedLines[1].value);
     else
         secondComponent->setLink(parsedLines[1].value, *firstComponent, parsedLines[0].value);
