@@ -23,7 +23,8 @@ SRC_GATE_COMPONENTS	=	Gate4071Component.cpp	\
 						Gate4001Component.cpp	\
 						Gate4081Component.cpp	\
 						Gate4011Component.cpp	\
-						Gate4030Component.cpp
+						Gate4030Component.cpp	\
+						Gate4069Component.cpp
 
 SRC_ELEMENTARY_COMPONENTS	=	AndComponent.cpp	\
 								NotComponent.cpp	\
@@ -34,7 +35,7 @@ SRC_SPECIALS_COMPONENTS	=	TrueComponent.cpp		\
 							FalseComponent.cpp		\
 							InputComponent.cpp		\
 							OutputComponent.cpp		\
-							ClockComponent.cpp		\
+							ClockComponent.cpp
 
 
 DIR_MAIN = $(addprefix src/, $(SRC_MAIN))

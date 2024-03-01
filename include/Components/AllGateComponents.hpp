@@ -13,5 +13,6 @@
 #include "GatesComponents/Gate4001Component.hpp"
 #include "GatesComponents/Gate4011Component.hpp"
 #include "GatesComponents/Gate4030Component.hpp"
+#include "GatesComponents/Gate4069Component.hpp"
 
 #endif /* !ALLGATECOMPONENTS_HPP_ */
