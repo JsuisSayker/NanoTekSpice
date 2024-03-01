@@ -24,6 +24,7 @@ nts::ComponentFactory::ComponentFactory()
     componentCreator["4071"] = [this](){ return create4071Component();};
     componentCreator["4081"] = [this](){ return create4081Component();};
     componentCreator["4001"] = [this](){ return create4001Component();};
+    componentCreator["4011"] = [this](){ return create4011Component();};
 }
 
 std::unique_ptr<nts::IComponent> nts::ComponentFactory::createComponent(const std::string &type)
@@ -92,6 +93,11 @@ std::unique_ptr<nts::IComponent> nts::ComponentFactory::create4081Component()
 std::unique_ptr<nts::IComponent> nts::ComponentFactory::create4001Component()
 {
     return std::make_unique<nts::Gate4001Component>();
+}
+
+std::unique_ptr<nts::IComponent> nts::ComponentFactory::create4011Component()
+{
+    return std::make_unique<nts::Gate4011Component>();
 }
 
 nts::ComponentFactory::~ComponentFactory()

@@ -33,6 +33,7 @@ namespace nts {
             std::unique_ptr<nts::IComponent> create4071Component();
             std::unique_ptr<nts::IComponent> create4081Component();
             std::unique_ptr<nts::IComponent> create4001Component();
+            std::unique_ptr<nts::IComponent> create4011Component();
 
         protected:
             std::unordered_map<std::string, std::function<std::unique_ptr<nts::IComponent>()>> componentCreator;

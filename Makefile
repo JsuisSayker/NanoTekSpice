@@ -21,7 +21,8 @@ SRC_PARSER	=	Parser.cpp			\
 
 SRC_GATE_COMPONENTS	=	Gate4071Component.cpp	\
 						Gate4001Component.cpp	\
-						Gate4081Component.cpp
+						Gate4081Component.cpp	\
+						Gate4011Component.cpp
 
 SRC_ELEMENTARY_COMPONENTS	=	AndComponent.cpp	\
 								NotComponent.cpp	\
