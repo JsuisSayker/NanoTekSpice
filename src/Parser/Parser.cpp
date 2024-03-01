@@ -72,9 +72,9 @@ void nts::Parser::addComponentToCircuitFromMatch(std::vector<ChipsetData> parsed
     } else if (parsedLines[0].type == "not") {
         std::unique_ptr<nts::IComponent> notComponent = factory.createNotComponent();
         circuit->addComponent(notComponent, parsedLines[0].value);
-    // } else if (parsedLines[0].type == "4071") {
-    //     std::unique_ptr<nts::IComponent> input = factory.();
-    //     circuit->addComponent(input, parsedLines[0].value);
+    } else if (parsedLines[0].type == "4071") {
+        std::unique_ptr<nts::IComponent> notComponent = factory.create4071Component();
+        circuit->addComponent(notComponent, parsedLines[0].value);
     } else {
         try {
             throw UnknownComponentType("Unknown component type: " + parsedLines[0].type);
