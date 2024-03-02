@@ -42,57 +42,57 @@ std::string nts::Parser::findSectionName(const std::string line)
     return sectionName;
 }
 
-void nts::Parser::addComponentToCircuitFromMatch(std::vector<ChipsetData> parsedLines, nts::Circuit *circuit)
+void nts::Parser::addComponentToCircuitFromMatch(std::vector<ChipsetData> lines, nts::Circuit *circuit)
 {
     nts::ComponentFactory factory;
-    if (parsedLines[0].type == "input") {
+    if (lines[0].type == "input") {
         std::unique_ptr<nts::IComponent> input = factory.createInputComponent();
-        circuit->addComponent(input, parsedLines[0].value);
-    } else if (parsedLines[0].type == "output") {
+        circuit->addComponent(input, lines[0].value);
+    } else if (lines[0].type == "output") {
         std::unique_ptr<nts::IComponent> output = factory.createOutputComponent();
-        circuit->addComponent(output, parsedLines[0].value);
-    } else if (parsedLines[0].type == "clock") {
+        circuit->addComponent(output, lines[0].value);
+    } else if (lines[0].type == "clock") {
         std::unique_ptr<nts::IComponent> clock = factory.createClockComponent();
-        circuit->addComponent(clock, parsedLines[0].value);
-    } else if (parsedLines[0].type == "true") {
+        circuit->addComponent(clock, lines[0].value);
+    } else if (lines[0].type == "true") {
         std::unique_ptr<nts::IComponent> trueComponent = factory.createTrueComponent();
-        circuit->addComponent(trueComponent, parsedLines[0].value);
-    } else if (parsedLines[0].type == "false") {
+        circuit->addComponent(trueComponent, lines[0].value);
+    } else if (lines[0].type == "false") {
         std::unique_ptr<nts::IComponent> falseComponent = factory.createFalseComponent();
-        circuit->addComponent(falseComponent, parsedLines[0].value);
-    } else if (parsedLines[0].type == "and") {
+        circuit->addComponent(falseComponent, lines[0].value);
+    } else if (lines[0].type == "and") {
         std::unique_ptr<nts::IComponent> andComponent = factory.createAndComponent();
-        circuit->addComponent(andComponent, parsedLines[0].value);
-    } else if (parsedLines[0].type == "or") {
+        circuit->addComponent(andComponent, lines[0].value);
+    } else if (lines[0].type == "or") {
         std::unique_ptr<nts::IComponent> orComponent = factory.createOrComponent();
-        circuit->addComponent(orComponent, parsedLines[0].value);
-    } else if (parsedLines[0].type == "xor") {
+        circuit->addComponent(orComponent, lines[0].value);
+    } else if (lines[0].type == "xor") {
         std::unique_ptr<nts::IComponent> xorComponent = factory.createXorComponent();
-        circuit->addComponent(xorComponent, parsedLines[0].value);
-    } else if (parsedLines[0].type == "not") {
+        circuit->addComponent(xorComponent, lines[0].value);
+    } else if (lines[0].type == "not") {
         std::unique_ptr<nts::IComponent> notComponent = factory.createNotComponent();
-        circuit->addComponent(notComponent, parsedLines[0].value);
-    } else if (parsedLines[0].type == "4071") {
+        circuit->addComponent(notComponent, lines[0].value);
+    } else if (lines[0].type == "4071") {
         std::unique_ptr<nts::IComponent> notComponent = factory.create4071Component();
-        circuit->addComponent(notComponent, parsedLines[0].value);
-    } else if (parsedLines[0].type == "4081") {
+        circuit->addComponent(notComponent, lines[0].value);
+    } else if (lines[0].type == "4081") {
         std::unique_ptr<nts::IComponent> notComponent = factory.create4081Component();
-        circuit->addComponent(notComponent, parsedLines[0].value);
-    } else if (parsedLines[0].type == "4001") {
+        circuit->addComponent(notComponent, lines[0].value);
+    } else if (lines[0].type == "4001") {
         std::unique_ptr<nts::IComponent> notComponent = factory.create4001Component();
-        circuit->addComponent(notComponent, parsedLines[0].value);
-    } else if (parsedLines[0].type == "4011") {
+        circuit->addComponent(notComponent, lines[0].value);
+    } else if (lines[0].type == "4011") {
         std::unique_ptr<nts::IComponent> notComponent = factory.create4011Component();
-        circuit->addComponent(notComponent, parsedLines[0].value);
-    } else if (parsedLines[0].type == "4030") {
+        circuit->addComponent(notComponent, lines[0].value);
+    } else if (lines[0].type == "4030") {
         std::unique_ptr<nts::IComponent> notComponent = factory.create4030Component();
-        circuit->addComponent(notComponent, parsedLines[0].value);
-    } else if (parsedLines[0].type == "4069") {
+        circuit->addComponent(notComponent, lines[0].value);
+    } else if (lines[0].type == "4069") {
         std::unique_ptr<nts::IComponent> notComponent = factory.create4069Component();
-        circuit->addComponent(notComponent, parsedLines[0].value);
+        circuit->addComponent(notComponent, lines[0].value);
     } else {
         try {
-            throw UnknownComponentType("Unknown component type: " + parsedLines[0].type);
+            throw UnknownComponentType("Unknown component type: " + lines[0].type);
         } catch (const UnknownComponentType& e) {
             std::cerr << "Error: " << e.what() << std::endl;
         }
@@ -101,28 +101,39 @@ void nts::Parser::addComponentToCircuitFromMatch(std::vector<ChipsetData> parsed
 
 int nts::Parser::parseAndExtractChipsetFromLine(const std::string line, int linePosition, nts::Circuit *circuit)
 {
-    std::vector<ChipsetData> parsedLines;
+    std::vector<ChipsetData> lines;
     for (const auto& actualLine : line) {
         std::istringstream iss(line);
         ChipsetData data;
         iss >> data.type >> data.value;
-        parsedLines.push_back(data);
+        lines.push_back(data);
     }
-    if (circuit->findComponent(parsedLines[0].value) != nullptr) {
+    if (circuit->findComponent(lines[0].value) != nullptr) {
         try {
-            throw ComponentNameAlreadyExists("Component name already exists: " + parsedLines[0].value);
+            throw ComponentNameAlreadyExists("Component name already exists: " + lines[0].value);
         } catch (const ComponentNameAlreadyExists& e) {
             std::cerr << "Error: " << e.what() << std::endl;
             return KO;
         }
     }
-    addComponentToCircuitFromMatch(parsedLines, circuit);
+    addComponentToCircuitFromMatch(lines, circuit);
     return OK;
 }
 
-int nts::Parser::parseAndExtractLinkFromLine(const std::string line, int linePosition, nts::Circuit *circuit)
+void nts::Parser::findAlreadyLinkedComponent(std::vector<LineData> parsedLines, std::vector<LineData>newParsedLines, nts::Circuit *circuit)
 {
-    std::vector<LineData> parsedLines;
+    for (size_t i = 0; i < parsedLines.size() - 2; ++i) {
+        const std::string& type = parsedLines[i].type;
+        const size_t& value = parsedLines[i].value;
+        if ((newParsedLines[0].type == type && newParsedLines[0].value == value) || (newParsedLines[1].type == type && newParsedLines[1].value == value)) {
+            throw InvalidLinkException("Link already exists");
+        }
+    }
+}
+
+int nts::Parser::parseAndExtractLinkFromLine(const std::string line, int linePosition, nts::Circuit *circuit, std::vector<LineData> *parsedLines)
+{
+    std::vector<LineData> newParsedLines;
     std::istringstream iss(line);
     std::string token;
 
@@ -141,10 +152,11 @@ int nts::Parser::parseAndExtractLinkFromLine(const std::string line, int linePos
                     return KO;
                 }
             }
-            parsedLines.push_back(data);
+            newParsedLines.push_back(data);
+            parsedLines->push_back(data);
         }
     }
-    if (!parsedLines[0].value || !parsedLines[1].value) {
+    if (!newParsedLines[0].value || !newParsedLines[1].value) {
         try {
             throw InvalidLinkException("Invalid link value");
         } catch (const InvalidLinkException& e) {
@@ -152,32 +164,38 @@ int nts::Parser::parseAndExtractLinkFromLine(const std::string line, int linePos
             return KO;
         }
     }
-    nts::IComponent *firstComponent = circuit->findComponent(parsedLines[0].type);
+    try {
+        findAlreadyLinkedComponent(parsedLines[0], newParsedLines, circuit);
+    } catch (const InvalidLinkException& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+        return KO;
+    }
+    nts::IComponent *firstComponent = circuit->findComponent(newParsedLines[0].type);
     if (firstComponent == nullptr) {
         try {
-            throw UnknownComponentName("Unknown component name: " + parsedLines[0].type);
+            throw UnknownComponentName("Unknown component name: " + newParsedLines[0].type);
         } catch (const UnknownComponentName& e) {
             std::cerr << "Error: " << e.what() << std::endl;
             return KO;
         }
     }
-    nts::IComponent *secondComponent = circuit->findComponent(parsedLines[1].type);
+    nts::IComponent *secondComponent = circuit->findComponent(newParsedLines[1].type);
     if (secondComponent == nullptr) {
         try {
-            throw UnknownComponentName("Unknown component name: " + parsedLines[1].type);
+            throw UnknownComponentName("Unknown component name: " + newParsedLines[1].type);
         } catch (const UnknownComponentName& e) {
             std::cerr << "Error: " << e.what() << std::endl;
             return KO;
         }
     }
     if (dynamic_cast<nts::Output*>(secondComponent) || dynamic_cast<nts::Input*>(firstComponent))
-        secondComponent->setLink(parsedLines[1].value, *firstComponent, parsedLines[0].value);
+        secondComponent->setLink(newParsedLines[1].value, *firstComponent, newParsedLines[0].value);
     else
-        firstComponent->setLink(parsedLines[0].value, *secondComponent, parsedLines[1].value);
+        firstComponent->setLink(newParsedLines[0].value, *secondComponent, newParsedLines[1].value);
     return OK;
 }
 
-int nts::Parser::saveLine(const std::string line, int linePosition, nts::Circuit *circuit)
+int nts::Parser::saveLine(const std::string line, int linePosition, nts::Circuit *circuit, std::vector<LineData> *parsedLines)
 {
     std::string sectionName = findSectionName(line);
     if (!sectionName.empty()) {
@@ -225,7 +243,7 @@ int nts::Parser::saveLine(const std::string line, int linePosition, nts::Circuit
                 return KO;
         }
         else if (_section == LINKS) {
-            if (parseAndExtractLinkFromLine(line, linePosition, circuit) == KO)
+            if (parseAndExtractLinkFromLine(line, linePosition, circuit, parsedLines) == KO)
                 return KO;
         }
         return OK;
@@ -250,6 +268,7 @@ int nts::Parser::parseFile(const std::string &filename, nts::Circuit *circuit)
     std::ifstream ifs(filename);
     int linePosition = 1;
     std::string line;
+    std::vector<LineData> parsedLines;
     if (!ifs.is_open()) {
         try {
             throw InvalidFileException("File:" + filename + " not found");
@@ -263,7 +282,7 @@ int nts::Parser::parseFile(const std::string &filename, nts::Circuit *circuit)
         line = trim(line);
         line = removeComment(line);
         if (!line.empty())
-            if (saveLine(line, linePosition, circuit) == KO)
+            if (saveLine(line, linePosition, circuit, &parsedLines) == KO)
                 return KO;
         linePosition++;
     }
