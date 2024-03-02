@@ -16,7 +16,7 @@ namespace nts
     {
         public:
             ClockComponent();
-            ~ClockComponent(){};
+            ~ClockComponent();
             nts::Tristate compute(std::size_t pin);
             void simulate(std::size_t tick);
             void setValue(nts::Tristate value);

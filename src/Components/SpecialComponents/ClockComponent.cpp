@@ -13,6 +13,10 @@ nts::ClockComponent::ClockComponent()
     this->value = nts::Undefined;
 }
 
+nts::ClockComponent::~ClockComponent()
+{
+}
+
 nts::Tristate nts::ClockComponent::compute(std::size_t pin)
 {
     if (pin != 1)

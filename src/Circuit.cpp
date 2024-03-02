@@ -49,12 +49,17 @@ void nts::Circuit::setState(std::string name, std::string value)
         if (nameComponent == name) {
             nts::Input* inputComponent = dynamic_cast<nts::Input*>(componentPtr.get());
             nts::Output* outputComponent = dynamic_cast<nts::Output*>(componentPtr.get());
+            nts::ClockComponent* clockComponent = dynamic_cast<nts::ClockComponent*>(componentPtr.get());
             if (inputComponent != nullptr) {
                 inputComponent->setValue(getTristateValue(value));
                 return;
             }
             if (outputComponent != nullptr) {
                 outputComponent->setValue(getTristateValue(value));
+                return;
+            }
+            if (clockComponent != nullptr) {
+                clockComponent->setValue(getTristateValue(value));
                 return;
             } else {
                 try {
