@@ -10,6 +10,7 @@
 nts::NotComponent::NotComponent(): nts::AComponent()
 {
     link.push_back(std::make_pair(nullptr, 0));
+    link.push_back(std::make_pair(nullptr, 0));
 }
 
 nts::Tristate nts::NotComponent::ThruthTable(nts::Tristate a)
@@ -23,7 +24,7 @@ nts::Tristate nts::NotComponent::ThruthTable(nts::Tristate a)
 
 nts::Tristate nts::NotComponent::compute(std::size_t pin)
 {
-    if (pin != 1)
-        throw "Error: pin index not valid";
+    if (pin > this->link.size())
+        throw "Error: pin index out of range";
     return ThruthTable(link[0].first->compute(link[0].second));
 }
