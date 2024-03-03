@@ -27,6 +27,7 @@ nts::Tristate nts::ClockComponent::compute(std::size_t pin)
 
 void nts::ClockComponent::simulate(std::size_t tick)
 {
+    (void)tick;
     if (this->firstValue == true && this->value != nts::Undefined) {
         this->firstValue = false;
         return;

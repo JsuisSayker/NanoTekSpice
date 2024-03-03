@@ -24,8 +24,8 @@ namespace nts
             IComponent *findComponent(std::string name);
             void display();
             int getTick();
-            nts::Tristate compute(std::size_t pin){return nts::Tristate::Undefined;};
-            void setLink(std::size_t pin, nts::IComponent &other, std::size_t otherPin){};
+            nts::Tristate compute(std::size_t pin){(void)pin;return nts::Tristate::Undefined;};
+            void setLink(std::size_t pin, nts::IComponent &other, std::size_t otherPin){(void)pin;(void)other;(void)otherPin;};
             void setState(std::string name, std::string value);
             nts::Tristate getTristateValue(std::string name);
 

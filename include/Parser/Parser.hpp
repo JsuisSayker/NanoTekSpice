@@ -37,11 +37,11 @@ namespace nts {
             static std::string findSectionName(const std::string line);
             static std::string trim(const std::string &str);
             static void addComponentToCircuitFromMatch(std::vector<ChipsetData> parsedLines, nts::Circuit *circuit);
-            int saveLine(const std::string line, int linePosition, nts::Circuit *circuit, std::vector<LineData> *parsedLines);
+            int saveLine(const std::string line, nts::Circuit *circuit, std::vector<LineData> *parsedLines);
             int parseFile(const std::string &filename, nts::Circuit *circuit);
-            int parseAndExtractChipsetFromLine(const std::string line, int linePosition, nts::Circuit *circuit);
-            int parseAndExtractLinkFromLine(const std::string line, int linePosition, nts::Circuit *circuit, std::vector<LineData> *parsedLines);
-            void findAlreadyLinkedComponent(std::vector<LineData> parsedLines, std::vector<LineData>newParsedLines, nts::Circuit *circuit);
+            int parseAndExtractChipsetFromLine(const std::string line, nts::Circuit *circuit);
+            int parseAndExtractLinkFromLine(const std::string line, nts::Circuit *circuit, std::vector<LineData> *parsedLines);
+            void findAlreadyLinkedComponent(std::vector<LineData> parsedLines, std::vector<LineData>newParsedLines);
 
         protected:
             Section _section;

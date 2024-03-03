@@ -22,6 +22,7 @@ void nts::AComponent::setLink(size_t pin, IComponent &other, size_t otherPin)
 
 nts::Tristate nts::AComponent::getLink(size_t pin) const
 {
+    (void)pin;
     return nts::Tristate::Undefined;
 }
 

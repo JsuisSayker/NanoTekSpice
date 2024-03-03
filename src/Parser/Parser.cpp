@@ -99,15 +99,13 @@ void nts::Parser::addComponentToCircuitFromMatch(std::vector<ChipsetData> lines,
     }
 }
 
-int nts::Parser::parseAndExtractChipsetFromLine(const std::string line, int linePosition, nts::Circuit *circuit)
+int nts::Parser::parseAndExtractChipsetFromLine(const std::string line, nts::Circuit *circuit)
 {
     std::vector<ChipsetData> lines;
-    for (const auto& actualLine : line) {
-        std::istringstream iss(line);
-        ChipsetData data;
-        iss >> data.type >> data.value;
-        lines.push_back(data);
-    }
+    std::istringstream iss(line);
+    ChipsetData data;
+    iss >> data.type >> data.value;
+    lines.push_back(data);
     if (circuit->findComponent(lines[0].value) != nullptr) {
         try {
             throw ComponentNameAlreadyExists("Component name already exists: " + lines[0].value);
@@ -120,7 +118,7 @@ int nts::Parser::parseAndExtractChipsetFromLine(const std::string line, int line
     return OK;
 }
 
-void nts::Parser::findAlreadyLinkedComponent(std::vector<LineData> parsedLines, std::vector<LineData>newParsedLines, nts::Circuit *circuit)
+void nts::Parser::findAlreadyLinkedComponent(std::vector<LineData> parsedLines, std::vector<LineData>newParsedLines)
 {
     for (size_t i = 0; i < parsedLines.size() - 2; ++i) {
         const std::string& type = parsedLines[i].type;
@@ -131,7 +129,7 @@ void nts::Parser::findAlreadyLinkedComponent(std::vector<LineData> parsedLines, 
     }
 }
 
-int nts::Parser::parseAndExtractLinkFromLine(const std::string line, int linePosition, nts::Circuit *circuit, std::vector<LineData> *parsedLines)
+int nts::Parser::parseAndExtractLinkFromLine(const std::string line, nts::Circuit *circuit, std::vector<LineData> *parsedLines)
 {
     std::vector<LineData> newParsedLines;
     std::istringstream iss(line);
@@ -165,7 +163,7 @@ int nts::Parser::parseAndExtractLinkFromLine(const std::string line, int linePos
         }
     }
     try {
-        findAlreadyLinkedComponent(parsedLines[0], newParsedLines, circuit);
+        findAlreadyLinkedComponent(parsedLines[0], newParsedLines);
     } catch (const InvalidLinkException& e) {
         std::cerr << "Error: " << e.what() << std::endl;
         return KO;
@@ -195,7 +193,7 @@ int nts::Parser::parseAndExtractLinkFromLine(const std::string line, int linePos
     return OK;
 }
 
-int nts::Parser::saveLine(const std::string line, int linePosition, nts::Circuit *circuit, std::vector<LineData> *parsedLines)
+int nts::Parser::saveLine(const std::string line, nts::Circuit *circuit, std::vector<LineData> *parsedLines)
 {
     std::string sectionName = findSectionName(line);
     if (!sectionName.empty()) {
@@ -239,11 +237,11 @@ int nts::Parser::saveLine(const std::string line, int linePosition, nts::Circuit
             }
         }
         else if (_section == CHIPSETS) {
-            if (parseAndExtractChipsetFromLine(line, linePosition, circuit) == KO)
+            if (parseAndExtractChipsetFromLine(line, circuit) == KO)
                 return KO;
         }
         else if (_section == LINKS) {
-            if (parseAndExtractLinkFromLine(line, linePosition, circuit, parsedLines) == KO)
+            if (parseAndExtractLinkFromLine(line, circuit, parsedLines) == KO)
                 return KO;
         }
         return OK;
@@ -282,7 +280,7 @@ int nts::Parser::parseFile(const std::string &filename, nts::Circuit *circuit)
         line = trim(line);
         line = removeComment(line);
         if (!line.empty())
-            if (saveLine(line, linePosition, circuit, &parsedLines) == KO)
+            if (saveLine(line, circuit, &parsedLines) == KO)
                 return KO;
         linePosition++;
     }

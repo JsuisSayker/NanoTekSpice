@@ -13,5 +13,6 @@ nts::TrueComponent::TrueComponent(): nts::AComponent()
 
 nts::Tristate nts::TrueComponent::compute(std::size_t pin)
 {
+    (void)pin;
     return nts::True;
 }

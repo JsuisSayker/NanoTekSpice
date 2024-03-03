@@ -32,5 +32,6 @@ void nts::Input::setValue(nts::Tristate value)
 
 void nts::Input::simulate(std::size_t tick)
 {
+    (void)tick;
     this->value = this->newValue;
 }
