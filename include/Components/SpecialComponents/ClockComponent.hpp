@@ -22,6 +22,7 @@ namespace nts
             void setValue(nts::Tristate value);
         protected:
             nts::Tristate value;
+            bool firstValue;
     };
 }
 
