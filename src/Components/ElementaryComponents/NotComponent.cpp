@@ -28,3 +28,14 @@ nts::Tristate nts::NotComponent::compute(std::size_t pin)
         throw "Error: pin index out of range";
     return ThruthTable(link[0].first->compute(link[0].second));
 }
+
+void nts::NotComponent::setLink(size_t pin, IComponent &other, size_t otherPin)
+{
+    if (pin > 0 && pin <= link.size()) {
+        if (pin == 2)
+            other.setLink(otherPin, *this, pin);
+        link[pin - 1] = std::make_pair(&other, otherPin);
+    }
+    else
+        std::cerr << "Error: Pin number out of range\n";
+}

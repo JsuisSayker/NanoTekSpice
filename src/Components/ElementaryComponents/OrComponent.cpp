@@ -35,3 +35,14 @@ nts::Tristate nts::OrComponent::compute(std::size_t pin)
         return ThruthTable(link[0].first->compute(link[0].second), link[1].first->compute(link[1].second));
     }
 }
+
+void nts::OrComponent::setLink(size_t pin, IComponent &other, size_t otherPin)
+{
+    if (pin > 0 && pin <= link.size()) {
+        if (pin == 3)
+            other.setLink(otherPin, *this, pin);
+        link[pin - 1] = std::make_pair(&other, otherPin);
+    }
+    else
+        std::cerr << "Error: Pin number out of range\n";
+}

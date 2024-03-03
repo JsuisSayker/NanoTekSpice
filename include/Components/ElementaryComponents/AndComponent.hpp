@@ -17,6 +17,7 @@ namespace nts
             AndComponent();
             nts::Tristate compute(std::size_t pin);
             nts::Tristate ThruthTable(nts::Tristate a, nts::Tristate b);
+            void setLink(size_t pin, IComponent &other, size_t otherPin);
     };
 }
 
