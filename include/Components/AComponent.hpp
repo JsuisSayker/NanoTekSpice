@@ -23,7 +23,6 @@ namespace nts
         virtual nts::Tristate compute(std::size_t pin) = 0;
         virtual void simulate(std::size_t tick) override {(void)tick;}
         void setLink(size_t pin, IComponent &other, size_t otherPin);
-        Tristate getLink(size_t pin) const;
 
     protected:
         std::vector<std::pair<IComponent *, size_t>> link;
