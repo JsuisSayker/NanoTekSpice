@@ -19,6 +19,7 @@
 #include "macros.hpp"
 
 #include <memory>
+#include <string.h>
 
 nts::Parser::Parser()
 {
@@ -106,6 +107,7 @@ int nts::Parser::parseAndExtractChipsetFromLine(const std::string line, nts::Cir
     ChipsetData data;
     iss >> data.type >> data.value;
     lines.push_back(data);
+    // }
     if (circuit->findComponent(lines[0].value) != nullptr) {
         try {
             throw ComponentNameAlreadyExists("Component name already exists: " + lines[0].value);
@@ -186,7 +188,8 @@ int nts::Parser::parseAndExtractLinkFromLine(const std::string line, nts::Circui
             return KO;
         }
     }
-    if (dynamic_cast<nts::Output*>(secondComponent) || dynamic_cast<nts::Input*>(firstComponent))
+// dynamic_cast<nts::Output*>(secondComponent) || dynamic_cast<nts::Input*>(firstComponent)
+    if (strncmp(newParsedLines[0].type.c_str(), "out", 3) == 0)
         secondComponent->setLink(newParsedLines[1].value, *firstComponent, newParsedLines[0].value);
     else
         firstComponent->setLink(newParsedLines[0].value, *secondComponent, newParsedLines[1].value);
